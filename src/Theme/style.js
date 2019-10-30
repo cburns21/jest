@@ -17,7 +17,7 @@ const themes = createMuiTheme({
         
     },
     props: {
-        MuiButton: {
+        MuiButtonBase: {
             disableRipple: true,
         }
     },

@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Theme from '../Theme/style.js'
 import Button from '@material-ui/core/Button';
 import { flexbox } from '@material-ui/system';
+import { MuiThemeProvider } from '@material-ui/core'
 
 const style1 = {
     marginLeft: '50px'
@@ -42,6 +43,7 @@ const Fieldset = ({ label, name, ...props }) => (
 
 const Basic = () => (
   <div >
+  <MuiThemeProvider theme={Theme}>
     <h1 
     style={style1}
     >Credentials</h1>
@@ -137,6 +139,7 @@ const Basic = () => (
         </Form>
         )}
         />
+    </MuiThemeProvider>
     </div>
 );
 
