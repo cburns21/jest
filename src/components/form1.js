@@ -1,14 +1,30 @@
 import React from 'react';
-import { Formik, FastField, Form, ErrorMessage, Field } from 'formik';
+import gql from "graphql-tag";
+import { useMutation } from "@apollo/react-hooks";
+import { Formik, FastField, Form, ErrorMessage,  } from 'formik';
 import * as Yup from 'yup';
 import Grid from '@material-ui/core/Grid';
 import Theme from '../Theme/style.js'
 import Button from '@material-ui/core/Button';
 import { flexbox } from '@material-ui/system';
-import { MuiThemeProvider } from '@material-ui/core'
+import { MuiThemeProvider, TextField } from '@material-ui/core'
+
+
+const ADD_QUERY = gql`
+    mutation CreateTwilioCredential($account_sid: String!, $auth_token: String!, $messaging_service_sid: String!){
+        createTwilioCredential(account_sid: $account_sid, auth_token: $auth_token, messaging_service_sid: $messaging_service_sid){
+            account_sid
+            auth_token
+            messaging_service_sid
+        }
+    }
+`;
 
 const style1 = {
-    marginLeft: '50px'
+    paddingLeft: '50px',
+    marginTop: '50px',
+    backgroundColor: Theme.palette.primary.header,
+    width: '100%'
 }
 
 // error styles
@@ -19,6 +35,7 @@ const styles2 = {
     marginBottom: '0.5rem',
     width: 300,
     marginLeft: '50px',
+    marginTop: '20px'
     
 }
 
@@ -31,7 +48,7 @@ const styles3 = {
 }
 
 
-const Fieldset = ({ label, name, ...props }) => (
+const Field = ({ label, name, ...props }) => (
   <React.Fragment>
     <label htmlFor={name}>{label}</label>
     <FastField name={name} {...props} />
@@ -41,36 +58,47 @@ const Fieldset = ({ label, name, ...props }) => (
   </React.Fragment>
 );
 
-const Basic = () => (
-  <div >
-  <MuiThemeProvider theme={Theme}>
-    <h1 
-    style={style1}
-    >Credentials</h1>
+const validationSchema= Yup.object().shape({
+    account_sid: Yup.string().required('Required!'),
+    auth_token: Yup.string().required('Required!'),
+    messaging_service_sid: Yup.string().required('Required!'),
+})
 
+
+const Basic = () => {  
+ const [ createCredentials ] = useMutation(ADD_QUERY);
+    return (
+  <div> 
+  <MuiThemeProvider theme={Theme}>
+    <h1 style={style1}>Twilio Integration</h1>
         <Formik
         initialValues={{
-            account_sid: '',
-            Auth_Token: '',
-            Messaging_Service_sid: '',
+            account_sid: '',  // 34 char
+            auth_token: '',  // 32 char
+            messaging_service_sid: '',  // 34 char
         }}
-        validationSchema={Yup.object().shape({
-            account_sid: Yup.string().required('Required!'),
-            Auth_Token: Yup.string().required('Required!'),
-            Messaging_Service_sid: Yup.string().required('Required!'),
-        })}
-        onSubmit={values => {
-            setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            }, 500);
+        validationSchema={validationSchema}
+        onSubmit={(values, {setSubmitting, resetForm}) => {
+            createCredentials({
+                variables: {
+                    account_sid: values.account_sid,
+                    auth_token: values.auth_token.token,
+                    messaging_service_sid: values.messaging_service_sid
+                }
+            }).then((response) => {
+                console.log(response)
+                setSubmitting(false);
+                resetForm() // optional if form should clear contents after submission . insert whatever to happen after user submits info
+            }).catch((response) => {
+                // insert whatever to happen if PID already has credentials
+                if (response == "Error: GraphQL error: Credentials for this pid already exist"){
+                    alert("You have already added credentials for your account")
+                }
+                setSubmitting(false);
+            });
         }}
-        render={({
-            handleSubmit,
-            handleReset,
-            isSubmitting,
-            errors,
-            touched,
-        }) => (
+        >
+       {({isSubmitting, handleReset}) => (
             <Form >
             <Grid   
             container
@@ -79,9 +107,8 @@ const Basic = () => (
             direction="row"
             style={styles2}>
                 <label>account_sid:</label>
-                <Fieldset 
+                <Field 
                     name="account_sid"
-                    // label="account_sid:"
                     type="text"
                     placeholder="account_sid"
                     // styles={styles4} 
@@ -94,9 +121,8 @@ const Basic = () => (
             direction="row"
             style={styles2}>
                 <label>auth_token:</label>
-                <Fieldset 
-                    name="Auth_Token"
-                    // label="account_sid:"
+                <Field 
+                    name="auth_token"
                     type="text"
                     placeholder="auth_token"
                     // styles={styles4} 
@@ -109,9 +135,8 @@ const Basic = () => (
             direction="row"
             style={styles2}>
                 <label>messaging_service_sid:</label>
-                <Fieldset 
-                    name="Messaging_Service_sid"
-                    // label="account_sid:"
+                <Field 
+                    name="messaging_service_sid"
                     type="text"
                     placeholder="messaging_service_sid"
                     // styles={styles4} 
@@ -126,21 +151,22 @@ const Basic = () => (
             direction='row'
             style={styles2} >
                 <Grid>
-                    <Button variant="contained" size= "small" color={Theme.palette.secondary.main}   type="submit" disable={isSubmitting}>
+                    <Button variant="contained" size= "small" color="secondary"   type="submit" disabled={isSubmitting}>
                         Save
                     </Button>
                 </Grid>
                 <Grid>
-                    <Button variant="contained" size= "small" color='#0298ff'  type="reset" onClick={handleReset}>
+                    <Button variant="contained" size= "small" color="secondary"  type="reset" onClick={handleReset}>
                         Cancel
                     </Button>
                 </Grid>
             </Grid >
         </Form>
         )}
-        />
+    </Formik>
     </MuiThemeProvider>
     </div>
-);
+    )
+}  
 
 export default Basic;
