@@ -14,14 +14,26 @@ const themes = createMuiTheme({
         secondary: {
             main: '#0298ff'
         }
-        
-        
     },
     props: {
         MuiButtonBase: {
             disableRipple: true,
+        },
+    },
+    typography: {
+        button: {
+            textTransform: 'none'
         }
     },
+    overrides: {
+        MuiButton: {
+            // root: {
+                fontSize: '13px',
+                secondary: '#0298ff',
+                
+            // }
+        }
+    }
    
     
 })

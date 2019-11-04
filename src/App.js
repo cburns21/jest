@@ -6,6 +6,9 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { createHttpLink } from "apollo-link-http";
+import fetch from 'unfetch';
+import 'unfetch/polyfill'
+
 
 
 const link = createHttpLink({ uri: "https://84b495db.ngrok.io/graphql" });

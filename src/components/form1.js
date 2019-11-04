@@ -8,6 +8,9 @@ import Theme from '../Theme/style.js'
 import Button from '@material-ui/core/Button';
 import { flexbox } from '@material-ui/system';
 import { MuiThemeProvider, TextField } from '@material-ui/core'
+import { configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
 
 
 const ADD_QUERY = gql`
@@ -20,18 +23,13 @@ const ADD_QUERY = gql`
     }
 `;
 
-const style1 = {
-    paddingLeft: '50px',
-    marginTop: '50px',
-    backgroundColor: Theme.palette.primary.header,
-    width: '100%'
-}
 
-// error styles
+
 const styles2 = {
     // color: Theme.palette.primary.error,
     // marginTop: '-0.5rem',
-    fontSize: '0.85rem',
+    fontSize: '11.7px',
+    fontFamily: "proxima, arial, sans-serif",
     marginBottom: '0.5rem',
     width: 300,
     marginLeft: '50px',
@@ -45,6 +43,17 @@ const styles3 = {
     marginBottom: '0.5rem',
     width: 300,
     justifyContent: 'flex-end'
+}
+
+const styles5 = {
+    color: Theme.palette.primary.error,
+    fontSize: '13px',
+    fontFamily: "proxima, arial, sans-serif",
+    marginBottom: '0.5rem',
+    marginLeft: '50px',
+    marginTop: '20px',
+    // marginRight: '20px',
+    // justifyContent: 'flex-start',
 }
 
 
@@ -70,7 +79,6 @@ const Basic = () => {
     return (
   <div> 
   <MuiThemeProvider theme={Theme}>
-    <h1 style={style1}>Twilio Integration</h1>
         <Formik
         initialValues={{
             account_sid: '',  // 34 char
@@ -111,7 +119,6 @@ const Basic = () => {
                     name="account_sid"
                     type="text"
                     placeholder="account_sid"
-                    // styles={styles4} 
                 />
             </Grid>
             <Grid   
@@ -139,7 +146,6 @@ const Basic = () => {
                     name="messaging_service_sid"
                     type="text"
                     placeholder="messaging_service_sid"
-                    // styles={styles4} 
                 />
             </Grid>
         
@@ -149,9 +155,9 @@ const Basic = () => {
             justify='space-between' 
             spacing={1} 
             direction='row'
-            style={styles2} >
+            style={styles5} >
                 <Grid>
-                    <Button variant="contained" size= "small" color="secondary"   type="submit" disabled={isSubmitting}>
+                    <Button variant="contained" size= "small" color="secondary"  type="submit" disabled={isSubmitting}>
                         Save
                     </Button>
                 </Grid>
