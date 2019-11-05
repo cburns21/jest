@@ -1,6 +1,7 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 import Form1 from "../../src/components/form1";
+import Field from "../../src/components/form1";
 import { TextField } from 'formik-material-ui';
 import { JestEnvironment } from "@jest/environment";
 import { shallow, mount, configure, simulate  } from 'enzyme';
@@ -9,8 +10,7 @@ import { Formik, FastField, Form, ErrorMessage,  } from 'formik';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import expect from "expect";
-import sinon from "sinon";
-
+import TestRenderer from 'react-test-renderer';
 
 
 configure({ adapter: new Adapter() });
@@ -18,18 +18,14 @@ jest.mock('../../src/components/form1', () => {
     
 })
 
-describe('Form1', () => {
+describe('Formik', () => {
         it('should call onsubmit when click submit button', () => {
-            const onSubmit= jest.fn()
-            const wrapper = mount(<Form onSubmit={onSubmit} />)
+            const onSubmitMock= jest.fn()
+            const wrapper = mount(<Form1  />)
             const instance = wrapper.instance()
-            const spy = jest.spyOn(instance, 'onSubmit', {
-                target: {
-                    value: true
-                }
-            })
+            const spy = jest.spyOn(instance, 'onSubmit')
             wrapper.find('Button').simulate('click')
-            expect(spy).toHaveBeenCalledTimes(1)
+            expect(instance.onSubmit).toHaveBeenCalledWith(true)
         })
         // it('should call validation message when field not filled in', () => {
         //     const fieldInput = shallow(<Form1/>)

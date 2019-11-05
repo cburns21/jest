@@ -1,5 +1,6 @@
 import React from 'react';
 import { createMuiTheme } from '@material-ui/core/styles';
+import { fontSize } from '@material-ui/system';
 
 
 const themes = createMuiTheme({
@@ -12,7 +13,7 @@ const themes = createMuiTheme({
             header: '#F1F2EB'
         },
         secondary: {
-            main: '#0298ff'
+            main: '#0078e7'
         }
     },
     props: {
@@ -22,7 +23,10 @@ const themes = createMuiTheme({
     },
     typography: {
         button: {
-            textTransform: 'none'
+            textTransform: 'none',
+            fontSize: '13px',
+            fontFamily: "proxima-nova, arial, sans-serif",
+            marginRight: "20px"
         }
     },
    

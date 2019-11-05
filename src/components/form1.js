@@ -52,8 +52,7 @@ const styles5 = {
     marginBottom: '0.5rem',
     marginLeft: '50px',
     marginTop: '20px',
-    // marginRight: '20px',
-    justifyContent: 'flex-start',
+
 }
 
 
@@ -152,8 +151,8 @@ const Form1 = () => {
             <Grid 
             container
             item xs={3}
-            justify='space-between' 
-            spacing={1} 
+            // justify='space-between' 
+            // spacing={1} 
             direction='row'
             style={styles5} >
                 <Grid>
