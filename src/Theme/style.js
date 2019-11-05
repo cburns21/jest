@@ -25,15 +25,7 @@ const themes = createMuiTheme({
             textTransform: 'none'
         }
     },
-    overrides: {
-        MuiButton: {
-            // root: {
-                fontSize: '13px',
-                secondary: '#0298ff',
-                
-            // }
-        }
-    }
+   
    
     
 })

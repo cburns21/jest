@@ -53,7 +53,7 @@ const styles5 = {
     marginLeft: '50px',
     marginTop: '20px',
     // marginRight: '20px',
-    // justifyContent: 'flex-start',
+    justifyContent: 'flex-start',
 }
 
 
@@ -74,7 +74,7 @@ const validationSchema= Yup.object().shape({
 })
 
 
-const Basic = () => {  
+const Form1 = () => {  
  const [ createCredentials ] = useMutation(ADD_QUERY);
     return (
   <div> 
@@ -175,4 +175,4 @@ const Basic = () => {
     )
 }  
 
-export default Basic;
+export default Form1;
